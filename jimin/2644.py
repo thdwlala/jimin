@@ -21,27 +21,25 @@ family ={1: [2, 3],
          9: [2]
                 }
 a,b = 7,3
-if a>b:
-    a,b = b,a #무조건 a가 작은 수가 나옴
 
-def defs(family,a,b):
-    sum =0
-    stack =list()
-    #리스트를 함수형태로 써도 빈리스트 생성됨
-    visited = list()
-    stack.append(a)
+def dfs(family, a, b):
+    stack = []
+    visited = []
+    stack.append((a, 0))  
 
-    while True: #stack이 비어있지 않다면
-        node = stack.pop()
+    while stack:
+        node, sum = stack.pop() #(현재 노드, 누적 촌수)
         if node == b:
-            break
+            return sum
         if node not in visited:
-            stack.extend(reversed(family[node]))
             visited.append(node)
-            sum+=1
-    return sum #시작 노드를 제외하고 숫자세기
+            for neighbor in reversed(family[node]):
+                 stack.append((neighbor, sum + 1))
+                 print(stack)
+               
+    return -1  # 연결이 없을 경우 -1 반환
 
-print(defs(family,a,b))
+print(dfs(family,a,b))
 
 
 
